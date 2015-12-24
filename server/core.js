@@ -1,12 +1,17 @@
 'use strict';
 
-import { List, Map } from 'immutable';
+var immutable = require('immutable')
+  , List = immutable.List
+  , Map = immutable.Map;
 
-export const INITIAL_STATE = Map();
+module.exports = exports = {}
+exports.INITIAL_STATE = Map();
 
 function getWinners(vote) {
   if (!vote) return [];
-  const [a, b] = vote.get('pair');
+  const pair = vote.get('pair');
+  const a = pair.get(0)
+    , b = pair.get(1);
   const aVotes = vote.getIn(['tally', a], 0);
   const bVotes = vote.getIn(['tally', b], 0);
   if (aVotes > bVotes)
@@ -17,11 +22,11 @@ function getWinners(vote) {
     return [a, b];
 }
 
-export function setEntries(state, entries) {
+exports.setEntries = function (state, entries) {
   return state.set('entries', List(entries));
-}
+};
 
-export function next(state) {
+exports.next = function (state) {
   const entries = state.get('entries')
     .concat(getWinners(state.get('vote')));
   if (entries.size === 1) {
@@ -36,12 +41,12 @@ export function next(state) {
         entries: entries.skip(2)
       });
   }
-}
+};
 
-export function vote(voteState, entry) {
+exports.vote = function (voteState, entry) {
   return voteState.updateIn(
     ['tally', entry],
     0,
     tally => tally + 1
   );
-}
+};

@@ -3,7 +3,7 @@
 import { Map, fromJS } from 'immutable';
 import { expect } from 'chai';
 
-import { setEntries, next, vote } from '../../src/core';
+import { setEntries, next, vote } from '../../server/core';
 
 describe('application logic', () => {
 
